@@ -74,3 +74,8 @@ config :phoenix, :stacktrace_depth, 20
 
 # Initialize plugs at runtime for faster development compilation
 config :phoenix, :plug_init_mode, :runtime
+
+# TODO: move to prod.secrets
+config :pandatest,
+  pandascore_token: "EQRDhM6Nrdt9FK0FBvaxD2QhAJVZkSi_n3-DxmeoyuF_0UdbYLU",
+  pandascore_client: Pandatest.ApiClient.Backend
