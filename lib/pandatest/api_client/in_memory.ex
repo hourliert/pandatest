@@ -1,6 +1,15 @@
 defmodule Pandatest.ApiClient.InMemory do
   def get_match(_id) do
-    %{"id" => 1, "name" => "Rhyno vs Baecon", "scheduled_at" => ~U[2020-10-10 14:10:10Z]}
+    {:ok,
+     %{
+       "id" => 1,
+       "name" => "Rhyno vs Baecon",
+       "scheduled_at" => ~U[2020-10-10 14:10:10Z],
+       "opponents" => [
+         %{"type" => "player", "opponent" => %{"id" => 1, "name" => "Thomas"}},
+         %{"type" => "player", "opponent" => %{"id" => 2, "name" => "Leo"}}
+       ]
+     }}
   end
 
   def upcoming_matches(count: _count) do

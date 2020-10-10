@@ -42,7 +42,7 @@ defmodule Pandatest.Matches do
   @doc """
   Returns the basic winning probablities for each opponent of a match.
 
-  Note: assumption, if/when the API returns some data it is always "well-formed".
+  Note: assumption: if/when the API returns some data it is always "well-formed".
   """
   def winning_probabilities_for_match(match_id) do
     %{}
