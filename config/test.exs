@@ -21,7 +21,5 @@ config :pandatest, PandatestWeb.Endpoint,
 # Print only warnings and errors during test
 config :logger, level: :warn
 
-# TODO: use InMemory client and test client against VCR
 config :pandatest,
-  pandascore_token: "EQRDhM6Nrdt9FK0FBvaxD2QhAJVZkSi_n3-DxmeoyuF_0UdbYLU",
-  pandascore_client: Pandatest.ApiClient.Backend
+  pandascore_client: Pandatest.ApiClient.InMemory

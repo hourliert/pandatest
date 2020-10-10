@@ -3,8 +3,8 @@ defmodule Pandatest.ApiClient.Backend do
 
   @api_token Application.get_env(:pandatest, :pandascore_token)
 
-  def upcoming_matches do
-    get("/matches/upcoming?page[size]=5", headers())
+  def upcoming_matches(count: count) do
+    get("/matches/upcoming?page[size]=#{count}", headers())
     |> case do
       {:ok, %HTTPoison.Response{body: body}} ->
         {:ok, body}
