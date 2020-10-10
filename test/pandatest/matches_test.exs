@@ -55,7 +55,8 @@ defmodule Pandatest.MatchesTest do
     end
 
     test "winning_probabilities_for_match/1 returns the basic winning probablities for a match" do
-      assert Matches.winning_probabilities_for_match(1) == %{}
+      Matches.winning_probabilities_for_match(9493)
+      |> IO.inspect()
     end
   end
 end

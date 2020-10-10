@@ -5,6 +5,7 @@ defmodule Pandatest.Matches do
 
   alias Pandatest.ApiClient
   alias Pandatest.Matches.Match
+  alias Pandatest.Opponents
 
   @doc """
   Returns a match by id.
@@ -45,28 +46,47 @@ defmodule Pandatest.Matches do
   Note: assumption: if/when the API returns some data it is always "well-formed".
   """
   def winning_probabilities_for_match(match_id) do
-    %{}
-    # TODO
-    # {:ok, match} = get_match(match_id)
-    #
-    # opponent_matches =
-    # match.opponnents
-    # |> Enum.map(fn opponent -> Task.async(fn -> get_match_for_opponent(opponent) end) end)
-    # |> Enum.map(fn task -> Task.await(task) end)
-    #
-    # Enum.zip(match.opponnents, opponent_matches)
-    # |> compute_basic_winning_probabilities()
+    match = get_match(match_id)
+
+    opponents_matches =
+      match.opponents
+      |> Enum.map(fn opponent -> Task.async(fn -> get_match_for_opponent(opponent) end) end)
+      |> Enum.map(fn task -> Task.await(task) end)
+
+    compute_match_probabilities(match.opponents, opponents_matches)
   end
 
-  defp get_match_for_opponent(%{type: "player", opponnent: opponnent}) do
-    []
+  defp get_match_for_opponent(%{type: "Player", opponent: opponent}) do
+    ApiClient.get_matches_for_player(opponent.id)
+    |> parse_match_or_matches()
   end
 
-  defp get_match_for_opponent(%{type: "team", opponnent: opponnent}) do
-    []
+  defp get_match_for_opponent(%{type: "Team", opponent: opponent}) do
+    ApiClient.get_matches_for_team(opponent.id)
+    |> parse_match_or_matches()
   end
 
-  defp compute_basic_winning_probabilities(_) do
-    %{}
+  defp compute_match_probabilities(opponents, matches) do
+    win_ratios = compute_opponent_win_ratios(opponents, matches)
+
+    win_probabilities =
+      Enum.reduce(opponents, %{}, fn o, acc -> Map.put(acc, o.opponent.name, 0) end)
+
+    Enum.zip(opponents, win_ratios)
+    |> Enum.reduce(win_probabilities, fn {opponent, win_ratio}, acc ->
+      Enum.map(acc, fn {k, v} ->
+        {k, v + if(k == opponent.opponent.name, do: win_ratio, else: 1 - win_ratio)}
+      end)
+    end)
+    |> Enum.map(fn {k, v} ->
+      {k, v / length(opponents)}
+    end)
+  end
+
+  defp compute_opponent_win_ratios(opponents, opponents_matches) do
+    Enum.zip(opponents, opponents_matches)
+    |> Enum.map(fn {opponent, matches} ->
+      Opponents.get_opponent_win_probability(opponent, matches)
+    end)
   end
 end

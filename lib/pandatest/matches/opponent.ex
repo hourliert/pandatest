@@ -3,16 +3,16 @@ defmodule Pandatest.Matches.Opponent do
 
   alias Pandatest.Matches.{Player, Team}
 
-  def from_api(%{"type" => "player", "opponent" => o}) do
+  def from_api(%{"type" => "Player", "opponent" => o}) do
     %__MODULE__{
-      type: "player",
+      type: "Player",
       opponent: Player.from_api(o)
     }
   end
 
-  def from_api(%{"type" => "team", "opponent" => o}) do
+  def from_api(%{"type" => "Team", "opponent" => o}) do
     %__MODULE__{
-      type: "team",
+      type: "Team",
       opponent: Team.from_api(o)
     }
   end
