@@ -7,16 +7,8 @@ defmodule Pandatest.Application do
 
   def start(_type, _args) do
     children = [
-      # Start the Ecto repository
-      # Pandatest.Repo,
-      # Start the Telemetry supervisor
-      PandatestWeb.Telemetry,
-      # Start the PubSub system
-      {Phoenix.PubSub, name: Pandatest.PubSub},
       # Start the Endpoint (http/https)
       PandatestWeb.Endpoint
-      # Start a worker by calling: Pandatest.Worker.start_link(arg)
-      # {Pandatest.Worker, arg}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

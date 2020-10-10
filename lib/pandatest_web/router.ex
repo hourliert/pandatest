@@ -13,16 +13,9 @@ defmodule PandatestWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", PandatestWeb do
-    pipe_through :browser
-
-    get "/", PageController, :index
+  scope "/api", PandatestWeb do
+    pipe_through :api
   end
-
-  # Other scopes may use custom stacks.
-  # scope "/api", PandatestWeb do
-  #   pipe_through :api
-  # end
 
   # Enables LiveDashboard only for development
   #
