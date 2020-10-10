@@ -5,6 +5,18 @@ defmodule Pandatest.ApiClient.BackendTest do
   describe "backend" do
     alias Pandatest.ApiClient.Backend
 
+    test "get_match/1 returns a match data" do
+      use_cassette "match_573008" do
+        assert {:ok, %{}} = Backend.get_match(573_008)
+      end
+    end
+
+    test "get_match/1 fails with invalid crendetials" do
+      use_cassette "match_invalid_credentials" do
+        assert {:error, "Pandascore API error: 401"} = Backend.get_match(573_008)
+      end
+    end
+
     test "upcoming_matches/1 fetches 5 upcoming matches" do
       use_cassette "upcoming_5_matches" do
         assert {:ok, body} = Backend.upcoming_matches(count: 5)

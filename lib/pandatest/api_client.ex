@@ -1,7 +1,15 @@
 defmodule Pandatest.ApiClient do
-  @pandascore_client Application.get_env(:pandatest, :pandascore_client)
+  alias Pandatest.Matches.Match
+
+  def get_match(id) do
+    api_client().get_match(id)
+  end
 
   def upcoming_matches(count: count) do
-    @pandascore_client.upcoming_matches(count: count)
+    api_client().upcoming_matches(count: count)
+  end
+
+  defp api_client do
+    Application.get_env(:pandatest, :pandascore_client)
   end
 end

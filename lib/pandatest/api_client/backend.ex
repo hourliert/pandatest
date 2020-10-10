@@ -3,9 +3,26 @@ defmodule Pandatest.ApiClient.Backend do
 
   @api_token Application.get_env(:pandatest, :pandascore_token)
 
+  def get_match(id) do
+    get("/matches/#{id}", headers())
+    |> format_response()
+  end
+
   def upcoming_matches(count: count) do
     get("/matches/upcoming?page[size]=#{count}", headers())
-    |> case do
+    |> format_response()
+  end
+
+  def process_request_url(url) do
+    "https://api.pandascore.co" <> url
+  end
+
+  def process_response_body(body) do
+    Jason.decode!(body)
+  end
+
+  def format_response(response) do
+    case response do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
         {:ok, body}
 
@@ -15,14 +32,6 @@ defmodule Pandatest.ApiClient.Backend do
       {:error, %HTTPoison.Error{reason: reason}} ->
         {:error, reason}
     end
-  end
-
-  def process_request_url(url) do
-    "https://api.pandascore.co" <> url
-  end
-
-  def process_response_body(body) do
-    Jason.decode!(body)
   end
 
   defp headers do
