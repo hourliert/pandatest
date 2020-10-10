@@ -6,8 +6,11 @@ defmodule Pandatest.ApiClient.Backend do
   def upcoming_matches(count: count) do
     get("/matches/upcoming?page[size]=#{count}", headers())
     |> case do
-      {:ok, %HTTPoison.Response{body: body}} ->
+      {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
         {:ok, body}
+
+      {:ok, %HTTPoison.Response{status_code: status}} ->
+        {:error, "Pandascore API error: #{status}"}
 
       {:error, %HTTPoison.Error{reason: reason}} ->
         {:error, reason}
