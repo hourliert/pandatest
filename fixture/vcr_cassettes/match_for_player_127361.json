@@ -1,0 +1,33 @@
+[
+  {
+    "request": {
+      "body": "",
+      "headers": {
+        "Authorization": "Bearer EQRDhM6Nrdt9FK0FBvaxD2QhAJVZkSi_n3-DxmeoyuF_0UdbYLU"
+      },
+      "method": "get",
+      "options": [],
+      "request_body": "",
+      "url": "https://api.pandascore.co/players/30156/matches"
+    },
+    "response": {
+      "binary": false,
+      "body": "{\"error\":\"Access Denied\",\"message\":\"You are not authorized to access this page.\"}",
+      "headers": {
+        "Cache-Control": "max-age=0, private, must-revalidate",
+        "Content-Length": "81",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Sat, 10 Oct 2020 15:25:15 GMT",
+        "Server": "Cowboy",
+        "X-Panda-Account": "hourliert@gmail.com",
+        "X-Panda-Route": "players/:player_id/matches",
+        "X-Rate-Limit-Remaining": "988",
+        "X-Rate-Limit-Used": "12",
+        "X-Request-Id": "Fjyq8CSVm_u4wtsMf7qi",
+        "X-Runtime": "0.025646"
+      },
+      "status_code": 403,
+      "type": "ok"
+    }
+  }
+]

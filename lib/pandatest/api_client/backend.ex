@@ -13,6 +13,16 @@ defmodule Pandatest.ApiClient.Backend do
     |> format_response()
   end
 
+  def get_matches_for_team(team_id) do
+    get("/teams/#{team_id}/matches", headers())
+    |> format_response()
+  end
+
+  def get_matches_for_player(player_id) do
+    get("/players/#{player_id}/matches", headers())
+    |> format_response()
+  end
+
   def process_request_url(url) do
     "https://api.pandascore.co" <> url
   end

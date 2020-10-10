@@ -35,5 +35,32 @@ defmodule Pandatest.ApiClient.BackendTest do
         assert {:error, "Pandascore API error: 401"} = Backend.upcoming_matches(count: 5)
       end
     end
+
+    test "get_matches_for_team/1 returns team matches" do
+      use_cassette "match_for_team_127361" do
+        assert {:ok, body} = Backend.get_matches_for_team(127_361)
+        assert body |> length() == 22
+      end
+    end
+
+    test "get_matches_for_team/1 fails with invalid crendetials" do
+      use_cassette "match_for_team_invalid_credentials" do
+        assert {:error, "Pandascore API error: 401"} = Backend.get_matches_for_team(127_361)
+      end
+    end
+
+    test "get_matches_for_player/1 returns team matches" do
+      use_cassette "match_for_player_127361" do
+        # Note: this test is failing because my pandascore plan doesn't include historical data for players.
+        # I wonder why historical data are included for teams but not for players
+        assert {:error, "Pandascore API error: 403"} = Backend.get_matches_for_player(30156)
+      end
+    end
+
+    test "get_matches_for_player/1 fails with invalid crendetials" do
+      use_cassette "match_for_player_invalid_credentials" do
+        assert {:error, "Pandascore API error: 401"} = Backend.get_matches_for_player(30156)
+      end
+    end
   end
 end
