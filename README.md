@@ -1,20 +1,45 @@
 # Pandatest
 
-To start your Phoenix server:
+0. Install
 
-  * Install dependencies with `mix deps.get`
-  * Create and migrate your database with `mix ecto.setup`
-  * Install Node.js dependencies with `npm install` inside the `assets` directory
-  * Start Phoenix endpoint with `mix phx.server`
+- You need [elixir](https://elixir-lang.org/install.html) 1.7 and above.
+- Clone this repo, then in the repo folder:
+- `mix deps.get` to install dependencies
+- TODO: set your Pandascore API key as an env variable `PANDASCORE_API_KEY`
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+1. Upcoming Matches
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+---
 
-## Learn more
+Please run `iex -S mix <<< "Pandatest.Matches.upcoming_matches"`
+Output should be something of that sort (depending upcoming matches).
 
-  * Official website: https://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Forum: https://elixirforum.com/c/phoenix-forum
-  * Source: https://github.com/phoenixframework/phoenix
+```
+iex(1)> [
+  %Pandatest.Matches.Match{
+    id: 573009,
+    name: "Semifinal 2: Rhyno vs Baecon",
+    scheduled_at: "2020-10-10T14:00:00Z"
+  },
+  %Pandatest.Matches.Match{
+    id: 572827,
+    name: "Upper Final: Nemiga vs Cyberium Seed",
+    scheduled_at: "2020-10-10T14:55:00Z"
+  },
+  %Pandatest.Matches.Match{
+    id: 573010,
+    name: "Final: Giants vs TBD",
+    scheduled_at: "2020-10-10T15:00:00Z"
+  },
+  %Pandatest.Matches.Match{
+    id: 572548,
+    name: " OG vs VK.gg",
+    scheduled_at: "2020-10-10T15:00:00Z"
+  },
+  %Pandatest.Matches.Match{
+    id: 572282,
+    name: "Semifinal 1: Vitality vs FaZe",
+    scheduled_at: "2020-10-10T15:30:00Z"
+  }
+]
+```
