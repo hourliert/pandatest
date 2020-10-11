@@ -36,10 +36,9 @@ defmodule Pandatest.MixProject do
       {:phoenix, "~> 1.5.5"},
       {:httpoison, "~> 1.6"},
       {:phoenix_html, "~> 2.11"},
-      {:phoenix_live_reload, "~> 1.2", only: :dev},
-      {:phoenix_live_dashboard, "~> 0.2"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
+      {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:exvcr, "~> 0.11", only: :test}
     ]
   end
