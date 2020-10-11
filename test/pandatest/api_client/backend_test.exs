@@ -7,7 +7,8 @@ defmodule Pandatest.ApiClient.BackendTest do
 
     test "get_match/1 returns a match data" do
       use_cassette "match_573008" do
-        assert {:ok, %{}} = Backend.get_match(573_008)
+        assert {:ok, match} = Backend.get_match(573_008)
+        assert match["name"] == "Semifinal 1: GTZ Bulls vs Giants"
       end
     end
 

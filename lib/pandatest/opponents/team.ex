@@ -1,4 +1,4 @@
-defmodule Pandatest.Matches.Player do
+defmodule Pandatest.Opponents.Team do
   defstruct [:id, :name]
 
   def from_api(payload) do

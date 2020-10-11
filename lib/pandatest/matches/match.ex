@@ -1,14 +1,15 @@
 defmodule Pandatest.Matches.Match do
-  defstruct [:id, :scheduled_at, :name, :opponents]
+  defstruct [:id, :scheduled_at, :name, :opponents, :winner_id]
 
-  alias Pandatest.Matches.Opponent
+  alias Pandatest.Opponents.Opponent
 
   def from_api(payload) do
     %__MODULE__{
       id: payload["id"],
       scheduled_at: payload["scheduled_at"],
       name: payload["name"],
-      opponents: parse_opponents(payload)
+      opponents: parse_opponents(payload),
+      winner_id: payload["winner_id"]
     }
   end
 
