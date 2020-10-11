@@ -25,7 +25,7 @@ defmodule Pandatest.OpponentsTest do
 
   describe "opponents" do
     test "load_opponent_matches/1 returns the opponent match, for a player" do
-      opponent = mock_opponent("Player", 1)
+      opponent = mock_opponent("Player", "thomas")
 
       assert Opponents.load_opponent_matches(opponent) ==
                %{
@@ -42,12 +42,12 @@ defmodule Pandatest.OpponentsTest do
     end
 
     test "load_opponent_matches/1 fails when the API returns an error, for a player" do
-      opponent = mock_opponent("Player", 2)
+      opponent = mock_opponent("Player", "id_with_error")
       assert Opponents.load_opponent_matches(opponent) == %{opponent | matches: []}
     end
 
     test "load_opponent_matches/1 returns the opponent match, for a team" do
-      opponent = mock_opponent("Team", 1)
+      opponent = mock_opponent("Team", "rhyno")
 
       assert Opponents.load_opponent_matches(opponent) ==
                %{
@@ -64,13 +64,13 @@ defmodule Pandatest.OpponentsTest do
     end
 
     test "load_opponent_matches/1 fails when the API returns an error, for a team" do
-      opponent = mock_opponent("Team", 2)
+      opponent = mock_opponent("Team", "id_with_error")
       assert Opponents.load_opponent_matches(opponent) == %{opponent | matches: []}
     end
 
     test "compute_opponent_win_ratio/1 computes the opponent win ratio when they have matches" do
-      opponent = mock_opponent("Player", 1)
-      other_opponent = mock_opponent("Player", 2)
+      opponent = mock_opponent("Player", "thomas")
+      other_opponent = mock_opponent("Player", "leo")
 
       matches = [
         # Player 1 won
@@ -96,7 +96,7 @@ defmodule Pandatest.OpponentsTest do
     end
 
     test "compute_opponent_win_ratio/1 computes the opponent win ratio when they don't have matche" do
-      opponent = mock_opponent("Player", 1)
+      opponent = mock_opponent("Player", "thomas")
       matches = []
 
       opponent = %{opponent | matches: matches}

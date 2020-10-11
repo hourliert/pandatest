@@ -16,10 +16,10 @@ defmodule Pandatest.Matches do
   @doc """
   Returns the 5 upcoming matches from Pandascore API.
 
-  Note: Easily extensible, I decided to respect the function signature from the Gist file.
+  Note: I decided to respect the function signature from the gist. Passing the count of upcoming matches to ease testing with the InMemory client.
   """
-  def upcoming_matches do
-    ApiClient.upcoming_matches(count: 5)
+  def upcoming_matches(count \\ 5) do
+    ApiClient.upcoming_matches(count: count)
   end
 
   @doc """
@@ -61,7 +61,7 @@ defmodule Pandatest.Matches do
     end)
   end
 
-  defp normalize_win_probabilities(win_probabilities) do
+  defp normalize_win_probabilities(win_probabilities) when length(win_probabilities) > 0 do
     Enum.map(win_probabilities, fn {opponent, win_probability} ->
       {opponent, win_probability / length(win_probabilities)}
     end)
@@ -69,7 +69,8 @@ defmodule Pandatest.Matches do
 
   defp format_win_probabilities(win_probabilities) do
     Enum.map(win_probabilities, fn {opponent, win_probability} ->
-      {opponent.opponent.name, win_probability}
+      {opponent.opponent.name, win_probability |> Float.round(3)}
     end)
+    |> Enum.into(%{})
   end
 end

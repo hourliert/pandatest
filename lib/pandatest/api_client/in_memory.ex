@@ -1,18 +1,54 @@
 defmodule Pandatest.ApiClient.InMemory do
-  def get_match(_id) do
+  @doc """
+  API fixtures for get_match.
+  """
+  def get_match("match_with_opponents") do
     {:ok,
      %{
-       "id" => 1,
+       "id" => "match_with_opponents",
        "name" => "Rhyno vs Baecon",
        "scheduled_at" => ~U[2020-10-10 14:10:10Z],
        "opponents" => [
-         %{"type" => "player", "opponent" => %{"id" => 1, "name" => "Thomas"}},
-         %{"type" => "player", "opponent" => %{"id" => 2, "name" => "Leo"}}
+         %{"type" => "Player", "opponent" => %{"id" => "thomas", "name" => "Thomas"}},
+         %{"type" => "Player", "opponent" => %{"id" => "leo", "name" => "Leo"}}
        ]
      }}
   end
 
-  def upcoming_matches(count: _count) do
+  def get_match("match_with_opponents_for_win_probabilities") do
+    {:ok,
+     %{
+       "id" => "match_with_opponents_for_win_probabilities",
+       "name" => "Fnatic vs Baecon",
+       "scheduled_at" => ~U[2020-10-10 14:10:10Z],
+       "opponents" => [
+         %{"type" => "Team", "opponent" => %{"id" => "fnatic", "name" => "Fnatic"}},
+         %{"type" => "Team", "opponent" => %{"id" => "baecon", "name" => "Baecon"}}
+       ]
+     }}
+  end
+
+  def get_match("match_with_new_opponents_for_win_probabilities") do
+    {:ok,
+     %{
+       "id" => "match_with_opponents_for_win_probabilities",
+       "name" => "Fnatic vs Newcomer",
+       "scheduled_at" => ~U[2020-10-10 14:10:10Z],
+       "opponents" => [
+         %{"type" => "Team", "opponent" => %{"id" => "fnatic", "name" => "Fnatic"}},
+         %{"type" => "Team", "opponent" => %{"id" => "newcomer", "name" => "Newcomer"}}
+       ]
+     }}
+  end
+
+  def get_match("match_with_server_error") do
+    {:error, "something"}
+  end
+
+  @doc """
+  API fixtures for upcoming_matches.
+  """
+  def upcoming_matches(count: 5) do
     {:ok,
      [
        %{"id" => 1, "name" => "Rhyno vs Baecon", "scheduled_at" => ~U[2020-10-10 14:10:10Z]},
@@ -23,25 +59,92 @@ defmodule Pandatest.ApiClient.InMemory do
      ]}
   end
 
-  def get_matches_for_team(1) do
+  def upcoming_matches(count: "with_error") do
+    {:error, "something"}
+  end
+
+  @doc """
+  API fixtures for get_matches_for_team.
+  """
+  def get_matches_for_team("rhyno") do
     {:ok,
      [
        %{"id" => 1, "name" => "Rhyno vs Baecon", "scheduled_at" => ~U[2020-10-10 14:10:10Z]}
      ]}
   end
 
-  def get_matches_for_team(2) do
+  def get_matches_for_team("fnatic") do
+    {:ok,
+     [
+       %{
+         "id" => 1,
+         "name" => "Fnatic vs A",
+         "scheduled_at" => ~U[2020-10-10 14:10:10Z],
+         "winner_id" => "fnatic"
+       },
+       %{
+         "id" => 1,
+         "name" => "Fnatic vs B",
+         "scheduled_at" => ~U[2020-10-10 14:10:10Z],
+         "winner_id" => "B"
+       },
+       %{
+         "id" => 1,
+         "name" => "Fnatic vs C",
+         "scheduled_at" => ~U[2020-10-10 14:10:10Z],
+         "winner_id" => "fnatic"
+       }
+     ]}
+  end
+
+  def get_matches_for_team("baecon") do
+    {:ok,
+     [
+       %{
+         "id" => 1,
+         "name" => "Baecon vs A",
+         "scheduled_at" => ~U[2020-10-10 14:10:10Z],
+         "winner_id" => "baecon"
+       },
+       %{
+         "id" => 1,
+         "name" => "Baecon vs B",
+         "scheduled_at" => ~U[2020-10-10 14:10:10Z],
+         "winner_id" => "B"
+       },
+       %{
+         "id" => 1,
+         "name" => "Baecon vs C",
+         "scheduled_at" => ~U[2020-10-10 14:10:10Z],
+         "winner_id" => "C"
+       }
+     ]}
+  end
+
+  def get_matches_for_team("newcomer"), do: {:ok, []}
+
+  def get_matches_for_team("id_with_error") do
     {:error, "something"}
   end
 
-  def get_matches_for_player(1) do
+  @doc """
+  API fixtures for get_matches_for_player.
+  """
+  def get_matches_for_player("thomas") do
     {:ok,
      [
        %{"id" => 1, "name" => "Thomas vs Leo", "scheduled_at" => ~U[2020-10-10 14:10:10Z]}
      ]}
   end
 
-  def get_matches_for_player(2) do
+  def get_matches_for_player("leo") do
+    {:ok,
+     [
+       %{"id" => 1, "name" => "Leo vs Yolo", "scheduled_at" => ~U[2020-10-10 14:10:10Z]}
+     ]}
+  end
+
+  def get_matches_for_player("id_with_error") do
     {:error, "something"}
   end
 end

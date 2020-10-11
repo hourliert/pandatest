@@ -2,21 +2,25 @@ defmodule Pandatest.MatchesTest do
   use Pandatest.DataCase
 
   alias Pandatest.Matches
+  alias Pandatest.Matches.Match
+  alias Pandatest.Opponents.{Opponent, Player}
 
   describe "matches" do
-    alias Pandatest.Matches.{Match, Opponent, Player}
-
     test "get_match/1 returns the match details" do
-      assert Matches.get_match(1) ==
+      assert Matches.get_match("match_with_opponents") ==
                %Match{
-                 id: 1,
+                 id: "match_with_opponents",
                  name: "Rhyno vs Baecon",
                  scheduled_at: ~U[2020-10-10 14:10:10Z],
                  opponents: [
-                   %Opponent{type: "player", opponent: %Player{id: 1, name: "Thomas"}},
-                   %Opponent{type: "player", opponent: %Player{id: 2, name: "Leo"}}
+                   %Opponent{type: "Player", opponent: %Player{id: "thomas", name: "Thomas"}},
+                   %Opponent{type: "Player", opponent: %Player{id: "leo", name: "Leo"}}
                  ]
                }
+    end
+
+    test "get_match/1 fails because of server error" do
+      assert {:error, _} = Matches.get_match("match_with_server_error")
     end
 
     test "upcoming_matches/0 returns the 5 first upcoming_matches" do
@@ -54,9 +58,20 @@ defmodule Pandatest.MatchesTest do
              ]
     end
 
-    test "winning_probabilities_for_match/1 returns the basic winning probablities for a match" do
-      Matches.winning_probabilities_for_match(9493)
-      |> IO.inspect()
+    test "upcoming_matches/0 fails because of server error" do
+      assert {:error, _} = Matches.upcoming_matches("with_error")
+    end
+
+    test "winning_probabilities_for_match/1 returns the winning probablities for a match" do
+      assert Matches.winning_probabilities_for_match("match_with_opponents_for_win_probabilities") ==
+               %{"Baecon" => 0.333, "Fnatic" => 0.667}
+    end
+
+    test "winning_probabilities_for_match/1 returns the winning probablities for a match when a team is new" do
+      assert Matches.winning_probabilities_for_match(
+               "match_with_new_opponents_for_win_probabilities"
+             ) ==
+               %{"Fnatic" => 0.584, "Newcomer" => 0.416}
     end
   end
 end
