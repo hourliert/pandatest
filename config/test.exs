@@ -22,5 +22,4 @@ config :pandatest, PandatestWeb.Endpoint,
 config :logger, level: :warn
 
 config :pandatest,
-  pandascore_token: "EQRDhM6Nrdt9FK0FBvaxD2QhAJVZkSi_n3-DxmeoyuF_0UdbYLU",
-  pandascore_client: Pandatest.ApiClient.Backend
+  pandascore_client: Pandatest.ApiClient.InMemory

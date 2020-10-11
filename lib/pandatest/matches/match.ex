@@ -1,7 +1,7 @@
 defmodule Pandatest.Matches.Match do
   defstruct [:id, :scheduled_at, :name, :opponents, :winner_id]
 
-  alias Pandatest.Matches.Opponent
+  alias Pandatest.Opponents.Opponent
 
   def from_api(payload) do
     %__MODULE__{

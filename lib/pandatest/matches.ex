@@ -4,7 +4,6 @@ defmodule Pandatest.Matches do
   """
 
   alias Pandatest.ApiClient
-  alias Pandatest.Matches.Match
   alias Pandatest.Opponents
 
   @doc """
@@ -12,7 +11,6 @@ defmodule Pandatest.Matches do
   """
   def get_match(id) do
     ApiClient.get_match(id)
-    |> parse_match_or_matches()
   end
 
   @doc """
@@ -22,22 +20,6 @@ defmodule Pandatest.Matches do
   """
   def upcoming_matches do
     ApiClient.upcoming_matches(count: 5)
-    |> parse_match_or_matches()
-  end
-
-  defp parse_match_or_matches({:ok, matches_payload}) when is_list(matches_payload) do
-    matches_payload
-    |> Enum.map(fn match_payload ->
-      Match.from_api(match_payload)
-    end)
-  end
-
-  defp parse_match_or_matches({:ok, match_payload}) do
-    Match.from_api(match_payload)
-  end
-
-  defp parse_match_or_matches({:error, reason}) do
-    {:error, "Couldn't get matches because of: #{reason}"}
   end
 
   @doc """
@@ -48,45 +30,46 @@ defmodule Pandatest.Matches do
   def winning_probabilities_for_match(match_id) do
     match = get_match(match_id)
 
-    opponents_matches =
-      match.opponents
-      |> Enum.map(fn opponent -> Task.async(fn -> get_match_for_opponent(opponent) end) end)
-      |> Enum.map(fn task -> Task.await(task) end)
-
-    compute_match_probabilities(match.opponents, opponents_matches)
+    match.opponents
+    |> Enum.map(fn o -> Task.async(fn -> Opponents.load_opponent_matches(o) end) end)
+    |> Enum.map(fn t -> Task.await(t) end)
+    |> Enum.map(&Opponents.compute_opponent_win_ratio/1)
+    |> compute_match_probabilities()
   end
 
-  defp get_match_for_opponent(%{type: "Player", opponent: opponent}) do
-    ApiClient.get_matches_for_player(opponent.id)
-    |> parse_match_or_matches()
+  defp compute_match_probabilities(opponents) do
+    opponents
+    |> sum_opponent_win_loose_probabilities()
+    |> normalize_win_probabilities()
+    |> format_win_probabilities()
   end
 
-  defp get_match_for_opponent(%{type: "Team", opponent: opponent}) do
-    ApiClient.get_matches_for_team(opponent.id)
-    |> parse_match_or_matches()
-  end
-
-  defp compute_match_probabilities(opponents, matches) do
-    win_ratios = compute_opponent_win_ratios(opponents, matches)
-
+  defp sum_opponent_win_loose_probabilities(opponents) do
     win_probabilities =
-      Enum.reduce(opponents, %{}, fn o, acc -> Map.put(acc, o.opponent.name, 0) end)
+      Enum.reduce(opponents, %{}, fn opponent, acc -> Map.put(acc, opponent, 0) end)
 
-    Enum.zip(opponents, win_ratios)
-    |> Enum.reduce(win_probabilities, fn {opponent, win_ratio}, acc ->
-      Enum.map(acc, fn {k, v} ->
-        {k, v + if(k == opponent.opponent.name, do: win_ratio, else: 1 - win_ratio)}
-      end)
-    end)
-    |> Enum.map(fn {k, v} ->
-      {k, v / length(opponents)}
+    Enum.reduce(opponents, win_probabilities, fn opponent, win_probabilities ->
+      for {other_opponent, win_probability} <- win_probabilities do
+        cond do
+          other_opponent == opponent ->
+            {other_opponent, win_probability + opponent.win_ratio}
+
+          true ->
+            {other_opponent, win_probability + 1 - opponent.win_ratio}
+        end
+      end
     end)
   end
 
-  defp compute_opponent_win_ratios(opponents, opponents_matches) do
-    Enum.zip(opponents, opponents_matches)
-    |> Enum.map(fn {opponent, matches} ->
-      Opponents.get_opponent_win_probability(opponent, matches)
+  defp normalize_win_probabilities(win_probabilities) do
+    Enum.map(win_probabilities, fn {opponent, win_probability} ->
+      {opponent, win_probability / length(win_probabilities)}
+    end)
+  end
+
+  defp format_win_probabilities(win_probabilities) do
+    Enum.map(win_probabilities, fn {opponent, win_probability} ->
+      {opponent.opponent.name, win_probability}
     end)
   end
 end
