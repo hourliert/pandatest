@@ -31,12 +31,26 @@ defmodule Pandatest.ApiClient.InMemory do
   def get_match("match_with_new_opponents_for_win_probabilities") do
     {:ok,
      %{
-       "id" => "match_with_opponents_for_win_probabilities",
+       "id" => "match_with_new_opponents_for_win_probabilities",
        "name" => "Fnatic vs Newcomer",
        "scheduled_at" => ~U[2020-10-10 14:10:10Z],
        "opponents" => [
          %{"type" => "Team", "opponent" => %{"id" => "fnatic", "name" => "Fnatic"}},
          %{"type" => "Team", "opponent" => %{"id" => "newcomer", "name" => "Newcomer"}}
+       ]
+     }}
+  end
+
+  def get_match("match_with_three_opponents_for_win_probabilities") do
+    {:ok,
+     %{
+       "id" => "match_with_three_opponents_for_win_probabilities",
+       "name" => "Fnatic vs Baecon vs Newcomer",
+       "scheduled_at" => ~U[2020-10-10 14:10:10Z],
+       "opponents" => [
+         %{"type" => "Team", "opponent" => %{"id" => "fnatic", "name" => "Fnatic"}},
+         %{"type" => "Team", "opponent" => %{"id" => "newcomer", "name" => "Newcomer"}},
+         %{"type" => "Team", "opponent" => %{"id" => "baecon", "name" => "Baecon"}}
        ]
      }}
   end

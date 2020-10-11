@@ -25,16 +25,21 @@ defmodule Pandatest.Matches do
   @doc """
   Returns the basic winning probablities for each opponent of a match.
 
-  Note: assumption: if/when the API returns some data it is always "well-formed".
+  Note: assumption: if/when the API returns some data it is always "well-formed". Eg.
+  * A match always have at least 2 opponents.
   """
   def winning_probabilities_for_match(match_id) do
-    match = get_match(match_id)
+    case get_match(match_id) do
+      {:error, _} = e ->
+        e
 
-    match.opponents
-    |> Enum.map(fn o -> Task.async(fn -> Opponents.load_opponent_matches(o) end) end)
-    |> Enum.map(fn t -> Task.await(t) end)
-    |> Enum.map(&Opponents.compute_opponent_win_ratio/1)
-    |> compute_match_probabilities()
+      match ->
+        match.opponents
+        |> Enum.map(fn o -> Task.async(fn -> Opponents.load_opponent_matches(o) end) end)
+        |> Enum.map(fn t -> Task.await(t) end)
+        |> Enum.map(&Opponents.compute_opponent_win_ratio/1)
+        |> compute_match_probabilities()
+    end
   end
 
   defp compute_match_probabilities(opponents) do
