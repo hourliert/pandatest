@@ -22,7 +22,6 @@ defmodule PandatestWeb do
       use Phoenix.Controller, namespace: PandatestWeb
 
       import Plug.Conn
-      import PandatestWeb.Gettext
       alias PandatestWeb.Router.Helpers, as: Routes
     end
   end
@@ -51,13 +50,6 @@ defmodule PandatestWeb do
     end
   end
 
-  def channel do
-    quote do
-      use Phoenix.Channel
-      import PandatestWeb.Gettext
-    end
-  end
-
   defp view_helpers do
     quote do
       # Use all HTML functionality (forms, tags, etc)
@@ -67,7 +59,6 @@ defmodule PandatestWeb do
       import Phoenix.View
 
       import PandatestWeb.ErrorHelpers
-      import PandatestWeb.Gettext
       alias PandatestWeb.Router.Helpers, as: Routes
     end
   end

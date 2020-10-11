@@ -89,6 +89,7 @@ defmodule Pandatest.MatchesTest do
       # P(Fnatic Win) = (0.66 + (1 - 0.33) + (1 - 0.5)) / 3
       # P(Baecon Win) = ((1 - 0.66) + 0.33 + (1 - 0.5)) / 3
       # P(Newcomer Win) = ((1 - 0.66) + (1 - 0.33) + 0.5) / 3
+      # TODO: this is broken
       assert Matches.winning_probabilities_for_match(
                "match_with_three_opponents_for_win_probabilities"
              ) ==
