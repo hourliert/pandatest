@@ -50,20 +50,24 @@ defmodule Pandatest.Matches do
   end
 
   defp sum_opponent_win_loose_probabilities(opponents) do
-    win_probabilities =
-      Enum.reduce(opponents, %{}, fn opponent, acc -> Map.put(acc, opponent, 0) end)
+    opponents
+    |> Enum.reduce(%{}, fn opponent, acc ->
+      win_probability =
+        Enum.reduce(opponents, 1, fn other_opponent, win_probability ->
+          cond do
+            other_opponent == opponent ->
+              win_probability
 
-    Enum.reduce(opponents, win_probabilities, fn opponent, win_probabilities ->
-      for {other_opponent, win_probability} <- win_probabilities do
-        cond do
-          other_opponent == opponent ->
-            {other_opponent, win_probability + opponent.win_ratio}
+            true ->
+              win_probability *
+                (Opponents.win_probability(opponent, other_opponent) +
+                   Opponents.loose_probability(other_opponent, opponent))
+          end
+        end)
 
-          true ->
-            {other_opponent, win_probability + 1 - opponent.win_ratio}
-        end
-      end
+      Map.put(acc, opponent, win_probability)
     end)
+    |> Enum.into([])
   end
 
   defp normalize_win_probabilities(win_probabilities) when length(win_probabilities) > 0 do

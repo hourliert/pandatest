@@ -63,19 +63,11 @@ defmodule Pandatest.MatchesTest do
     end
 
     test "winning_probabilities_for_match/1 returns the winning probablities for a match" do
-      # Fnatic win ratio: 0.66
-      # Baecon win ratio: 0.33
-      # P(Fnatic Win) = (0.66 + (1 - 0.33)) / 2
-      # P(Baecon Win) = ((1 - 0.66) + 0.33) / 2
       assert Matches.winning_probabilities_for_match("match_with_opponents_for_win_probabilities") ==
                %{"Baecon" => 0.333, "Fnatic" => 0.667}
     end
 
     test "winning_probabilities_for_match/1 returns the winning probablities for a match when a team is new" do
-      # Fnatic win ratio: 0.66
-      # Newcomer win ratio: 0.5
-      # P(Fnatic Win) = (0.66 + (1 - 0.5)) / 2
-      # P(Newcomer Win) = ((1 - 0.66) + 0.5) / 2
       assert Matches.winning_probabilities_for_match(
                "match_with_new_opponents_for_win_probabilities"
              ) ==
@@ -83,17 +75,10 @@ defmodule Pandatest.MatchesTest do
     end
 
     test "winning_probabilities_for_match/1 returns the winning probablities for a match with 3 opponents" do
-      # Fnatic win ratio: 0.66
-      # Baecon win ratio: 0.33
-      # Newcomer win ratio: 0.5
-      # P(Fnatic Win) = (0.66 + (1 - 0.33) + (1 - 0.5)) / 3
-      # P(Baecon Win) = ((1 - 0.66) + 0.33 + (1 - 0.5)) / 3
-      # P(Newcomer Win) = ((1 - 0.66) + (1 - 0.33) + 0.5) / 3
-      # TODO: this is broken
       assert Matches.winning_probabilities_for_match(
                "match_with_three_opponents_for_win_probabilities"
              ) ==
-               %{"Fnatic" => 0.611, "Newcomer" => 0.5, "Baecon" => 0.389}
+               %{"Baecon" => 0.185, "Fnatic" => 0.519, "Newcomer" => 0.324}
     end
 
     test "winning_probabilities_for_match/1 fails when the get_match API has an error" do

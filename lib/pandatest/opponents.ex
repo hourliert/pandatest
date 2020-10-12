@@ -54,4 +54,22 @@ defmodule Pandatest.Opponents do
   end
 
   def compute_opponent_win_ratio(%Opponent{} = opponent), do: %{opponent | win_ratio: 0.5}
+
+  @doc """
+  Computes the win probability between 2 opponents.
+
+  P(A win) = P(A win B) + P(B looses A)
+  """
+  def win_probability(%Opponent{} = first, %Opponent{} = second) do
+    (first.win_ratio + (1 - second.win_ratio)) / 2
+  end
+
+  @doc """
+  Computes the loose probability between 2 opponents.
+
+  P(A looses) = P(A looses B) + P(B wins A)
+  """
+  def loose_probability(%Opponent{} = first, %Opponent{} = second) do
+    1 - win_probability(first, second)
+  end
 end

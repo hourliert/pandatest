@@ -1,15 +1,13 @@
 # Pandatest
 
-0. Install
+## Install
 
 - You need [elixir](https://elixir-lang.org/install.html) 1.7 and above.
 - Clone this repo, then in the repo folder:
 - `mix deps.get` to install dependencies
 - TODO: set your Pandascore API key as an env variable `PANDASCORE_API_KEY`
 
-1. Upcoming Matches
-
----
+## Upcoming Matches
 
 Please run `iex -S mix <<< "Pandatest.Matches.upcoming_matches"`
 Output should be something of that sort (depending upcoming matches).
@@ -43,3 +41,7 @@ iex(1)> [
   }
 ]
 ```
+
+## Basic winning probabilities
+
+## Rest API
