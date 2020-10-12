@@ -8,7 +8,8 @@ defmodule Pandatest.Application do
   def start(_type, _args) do
     children = [
       # Start the Endpoint (http/https)
-      PandatestWeb.Endpoint
+      PandatestWeb.Endpoint,
+      {Cachex, name: :pandascore_api}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

@@ -75,3 +75,12 @@ If the server has been started from the above step, please visit: [http://localh
 You should see something like this: `{"data":{"Giants":0.46,"Origen":0.54}}`
 
 If you load the data for a unknown match, you should see: `{"error":true,"reason":"Couldn't get matches because of: Pandascore API error: 404"}`
+
+## Notes
+
+- I didn't implement a cache for API requests. However, I describe in `lib/pandatest/api_client.ex` a possible cache implementation.
+- The different API requests (in `winning_probabilities_for_match`) are parallelized where possible
+- I have tested the apps (high level tests in the controller, and unit tests in deeper files)
+  - I have used ExVCR to test the Pandscore API Client so that I am not expose to flake.
+  - I have created an InMemory Pandscore API client so that functions that depends on it are deterministc during tests
+  - In an ideal world, I would probably use `Ecto.Schema` for my domain models. That would also make testing simpler with `ExMachina`. I started without it for this project and didn't want to spend the time to refactor.

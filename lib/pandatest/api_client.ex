@@ -4,6 +4,20 @@ defmodule Pandatest.ApiClient do
   def get_match(id) do
     api_client().get_match(id)
     |> parse_match_or_matches()
+
+    ## Below is an example of cache using Cachex.
+    # Cachex starts its own process (which holds the cache state if no backend is specified (ie. no redis/memcache))
+    # It can be seen as a GenServer that holds a massive HashMap (cache_key -> cache_value) and offers public API like: get, set and fetch.
+    # I didn't spend the time to implement the cache for all API functions (this also raises the question: when should we invalidate the cache, especially for transient API calls like upcoming_matches)
+
+    # Cachex.fetch(:pandascore_api, "get_match_#{id}", fn ->
+    #   {:commit,
+    #     api_client().get_match(id)
+    #     |> parse_match_or_matches()}
+    # end)
+    # |> case do
+    #   {_, match} -> match
+    # end
   end
 
   def upcoming_matches(count: count) do

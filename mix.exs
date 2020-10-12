@@ -33,6 +33,7 @@ defmodule Pandatest.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:cachex, "~> 3.3"},
       {:phoenix, "~> 1.5.5"},
       {:httpoison, "~> 1.6"},
       {:phoenix_html, "~> 2.11"},
