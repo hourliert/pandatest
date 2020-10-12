@@ -59,6 +59,10 @@ defmodule Pandatest.ApiClient.InMemory do
     {:error, "something"}
   end
 
+  def get_match(_) do
+    {:error, "404"}
+  end
+
   @doc """
   API fixtures for upcoming_matches.
   """
@@ -75,6 +79,10 @@ defmodule Pandatest.ApiClient.InMemory do
 
   def upcoming_matches(count: "with_error") do
     {:error, "something"}
+  end
+
+  def upcoming_matches(count: _) do
+    {:error, "404"}
   end
 
   @doc """
@@ -141,6 +149,10 @@ defmodule Pandatest.ApiClient.InMemory do
     {:error, "something"}
   end
 
+  def get_matches_for_team(_) do
+    {:error, "404"}
+  end
+
   @doc """
   API fixtures for get_matches_for_player.
   """
@@ -160,5 +172,9 @@ defmodule Pandatest.ApiClient.InMemory do
 
   def get_matches_for_player("id_with_error") do
     {:error, "something"}
+  end
+
+  def get_matches_for_player(_) do
+    {:error, "404"}
   end
 end
