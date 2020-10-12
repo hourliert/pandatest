@@ -6,6 +6,10 @@
 - Clone this repo, then in the repo folder:
 - `mix deps.get` to install dependencies
 
+## Running the tests
+
+- Run `mix test`
+
 ### Running the server
 
 #### Development mode
@@ -78,9 +82,9 @@ If you load the data for a unknown match, you should see: `{"error":true,"reason
 
 ## Notes
 
-- I didn't implement a cache for API requests. However, I describe in `lib/pandatest/api_client.ex` a possible cache implementation.
+- I didn't implement a cache for API requests. However, I described in `lib/pandatest/api_client.ex` a possible cache implementation.
 - The different API requests (in `winning_probabilities_for_match`) are parallelized where possible
 - I have tested the apps (high level tests in the controller, and unit tests in deeper files)
-  - I have used ExVCR to test the Pandscore API Client so that I am not expose to flake.
-  - I have created an InMemory Pandscore API client so that functions that depends on it are deterministc during tests
-  - In an ideal world, I would probably use `Ecto.Schema` for my domain models. That would also make testing simpler with `ExMachina`. I started without it for this project and didn't want to spend the time to refactor.
+  - I have used ExVCR to test the Pandscore API Client so that I am not expose to network and therfore flake.
+  - I have created an InMemory Pandscore API client so that functions that depend on it are deterministc during tests
+  - In an ideal world, I would probably use `Ecto.Schema` for my domain models. That would also make stubbing simpler with `ExMachina`. I started without it for this project and didn't want to spend the time to refactor.

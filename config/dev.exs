@@ -60,5 +60,5 @@ config :phoenix, :stacktrace_depth, 20
 config :phoenix, :plug_init_mode, :runtime
 
 config :pandatest,
-  pandascore_token: "EQRDhM6Nrdt9FK0FBvaxD2QhAJVZkSi_n3-DxmeoyuF_0UdbYLU",
+  pandascore_token: "YOUR_PANDASCORE_API_KEY_HERE",
   pandascore_client: Pandatest.ApiClient.Backend
